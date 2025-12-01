@@ -22,7 +22,14 @@ function App() {
       setFileName(file.name);
 
       const arrayBuffer = await file.arrayBuffer();
-      const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+     
+      // קרא את הקובץ עם אופציות ספציפיות לדפדפן
+      const workbook = XLSX.read(arrayBuffer, {
+        type: 'array',
+        cellDates: true,
+        cellNF: false,
+        cellText: false
+      });
      
       // קח את הגיליון הראשון
       const sheetName = workbook.SheetNames[0];
@@ -31,7 +38,8 @@ function App() {
       // המר לJSON
       const jsonData: any[][] = XLSX.utils.sheet_to_json(worksheet, {
         header: 1,
-        defval: ''
+        defval: '',
+        raw: false
       });
 
       // קח 10 שורות ראשונות ו-10 עמודות
